@@ -86,17 +86,19 @@ namespace Lookup1
 
                 foreach (var flow in permutedList)
                 {
-                    if (flowDict.TryGetValue(flow, out var flowids))
+                    if (!flowDict.TryGetValue(flow, out var flowids))
                     {
-                        foreach (var flowid in flowids)
+                        continue;
+                    }
+                    foreach (var flowid in flowids)
+                    {
+                        if (!fareDict.TryGetValue(flowid, out var fareRecords))
                         {
-                            if (fareDict.TryGetValue(flowid, out var fareRecords))
-                            {
-                                foreach (var (ticketType, resCode, fare) in fareRecords)
-                                {
-                                    Console.WriteLine($"{ticketType} {fare/100.0:F2} {resCode}");
-                                }
-                            }
+                            continue;
+                        }
+                        foreach (var (ticketType, resCode, fare) in fareRecords)
+                        {
+                            Console.WriteLine($"{ticketType} {fare/100.0:F2} {resCode}");
                         }
                     }
                 }
